@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Confirmación de Boda</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 2em;
+      text-align: center;
+    }
+    input {
+      padding: 0.5em;
+      margin: 0.5em;
+    }
+    button {
+      padding: 0.5em 1em;
+    }
+    #mensaje {
+      margin-top: 1em;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>Confirma tu asistencia</h1>
+  <form id="formulario">
+    <input type="text" name="nombre" placeholder="Nombre" required><br>
+    <input type="text" name="apellido" placeholder="Apellido" required><br>
+    <button type="submit">Confirmar</button>
+  </form>
+  <div id="mensaje"></div>
+
+  <script>
+    const form = document.getElementById("formulario");
+    const mensajeDiv = document.getElementById("mensaje");
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const nombre = form.nombre.value;
+      const apellido = form.apellido.value;
+
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", "https://script.google.com/macros/s/AKfycbx8w0SSekURnMU5vSBPq91Due09WmBzkoLQnIFJSsElBho2n5R_TQVCJx0NjxRfiML1/exec", true);
+      xhr.setRequestHeader("Content-Type", "application/json");
+
+      xhr.onload = function() {
+        if (xhr.status === 200) {
+          const response = JSON.parse(xhr.responseText);
+          mensajeDiv.textContent = response.mensaje;
+        } else {
+          mensajeDiv.textContent = "Hubo un error al procesar tu solicitud.";
+        }
+      };
+
+      xhr.onerror = function() {
+        mensajeDiv.textContent = "Hubo un problema con la solicitud.";
+      };
+
+      const data = JSON.stringify({ nombre, apellido });
+      xhr.send(data);
+    });
+  </script>
+</body>
+</html>
