@@ -3,15 +3,21 @@ const url = "https://script.google.com/macros/s/AKfycbw6HRxzdEsFWsIxVnBwuPcZVdH1
 document.getElementById("formulario").addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const nombre = document.getElementById("nombre").value.trim();
-  const apellido = document.getElementById("apellido").value.trim();
-  const confirmado = document.querySelector('input[name="confirmado"]:checked').value;
-  const mensaje = document.getElementById("mensaje").value.trim();
+  const nombreInput = document.getElementById("nombre");
+  const apellidoInput = document.getElementById("apellido");
+  const mensajeInput = document.getElementById("mensaje");
+  const confirmadoInput = document.querySelector('input[name="confirmado"]:checked');
+
+  const nombre = nombreInput.value.trim();
+  const apellido = apellidoInput.value.trim();
+  const confirmado = confirmadoInput.value;
+  const mensaje = mensajeInput.value.trim();
+
+  const respuesta = document.getElementById("respuesta");
+  respuesta.classList.remove("fade-out");
 
   const res = await fetch(`${url}?nombre=${nombre}&apellido=${apellido}`);
   const data = await res.json();
-
-  const respuesta = document.getElementById("respuesta");
 
   if (data.encontrado) {
     await fetch(url, {
@@ -19,10 +25,43 @@ document.getElementById("formulario").addEventListener("submit", async (e) => {
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `nombre=${encodeURIComponent(nombre)}&apellido=${encodeURIComponent(apellido)}&confirmado=${encodeURIComponent(confirmado)}&mensaje=${encodeURIComponent(mensaje)}`
     });
-    respuesta.innerText = "¡Gracias por confirmar tu asistencia!";
+    
+    // Mostrar el mensaje dependiendo de la opción seleccionada
+    if (confirmado === "Sí") {
+      respuesta.innerText = "Te esperamos en este día tan especial😎";
+    } else {
+      respuesta.innerText = "Lamentamos que no puedas acompañarnos ese día 🥺";
+    }
+
+    document.getElementById("formulario").reset();
   } else {
     respuesta.innerText = "Lo sentimos, no encontramos tu nombre en la lista de invitados.";
   }
+
+  // Desvanecer después de 5 segundos
+  setTimeout(() => {
+    respuesta.classList.add("fade-out");
+    nombreInput.classList.add("fade-out");
+    apellidoInput.classList.add("fade-out");
+    mensajeInput.classList.add("fade-out");
+    document.querySelectorAll('input[name="confirmado"]').forEach(el => {
+      el.parentElement.classList.add("fade-out");
+    });
+
+    // Limpiar y restaurar visibilidad después de que se desvanecen
+    setTimeout(() => {
+      document.getElementById("formulario").reset();
+      respuesta.innerText = "";
+
+      respuesta.classList.remove("fade-out");
+      nombreInput.classList.remove("fade-out");
+      apellidoInput.classList.remove("fade-out");
+      mensajeInput.classList.remove("fade-out");
+      document.querySelectorAll('input[name="confirmado"]').forEach(el => {
+        el.parentElement.classList.remove("fade-out");
+      });
+    }, 1000); // Esperar a que termine el fade
+  }, 4000); // 4 segundos
 });
 
 // Contador regresivo a la boda

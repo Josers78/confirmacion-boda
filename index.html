@@ -9,7 +9,7 @@
 </head>
 <body>
   <div class="hero">
-    <h2 class="novios">Marelyn & José</h2>
+    <h2 class="novios">José & Marelyn</h2>
     <p class="fecha">08 de Noviembre de 2025</p>
     <div id="contador" class="contador"></div>
   </div>
@@ -19,16 +19,26 @@
     <h1>Confirmación de Asistencia</h1>
     <p class="subtitle">Por favor, confirma tu asistencia a nuestra Boda</p>
     <form id="formulario">
-      <input type="text" id="nombre" placeholder="Nombre" required>
-      <input type="text" id="apellido" placeholder="Apellido" required>
-      
-      <div class="radio-group">
-        <p>¿Asistirás?</p>
-        <label><input type="radio" name="confirmado" value="Sí" checked> Sí</label>
-        <label><input type="radio" name="confirmado" value="No"> No</label>
-      </div>
+     <input type="text" id="nombre" placeholder="👤 Nombre" required>
+<input type="text" id="apellido" placeholder="👥 Apellido" required>
 
-      <textarea id="mensaje" placeholder="Mensaje (opcional)"></textarea>
+      
+     
+	<div class="radio-group">
+ 		 <p>¿Asistirás?</p>
+  	<label>
+    	Sí
+    	<input type="radio" name="confirmado" value="Sí" checked>
+  	</label>
+  <label>
+    No
+    <input type="radio" name="confirmado" value="No">
+  </label>
+</div>
+
+
+
+      <textarea id="mensaje" placeholder="Deseas dejarnos un mensaje (opcional)"></textarea>
       <button type="submit">Enviar</button>
     </form>
     <p id="respuesta"></p>
@@ -37,3 +47,4 @@
   <script src="script.js"></script>
 </body>
 </html>
+
