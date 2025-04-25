@@ -25,7 +25,7 @@ document.getElementById("formulario").addEventListener("submit", async (e) => {
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `nombre=${encodeURIComponent(nombre)}&apellido=${encodeURIComponent(apellido)}&confirmado=${encodeURIComponent(confirmado)}&mensaje=${encodeURIComponent(mensaje)}`
     });
-    
+
     // Mostrar el mensaje dependiendo de la opción seleccionada
     if (confirmado === "Sí") {
       respuesta.innerText = "Te esperamos en este día tan especial😎";
@@ -33,35 +33,25 @@ document.getElementById("formulario").addEventListener("submit", async (e) => {
       respuesta.innerText = "Lamentamos que no puedas acompañarnos ese día 🥺";
     }
 
-    document.getElementById("formulario").reset();
   } else {
     respuesta.innerText = "Verifica que hayas escrito bien tu nombre.";
   }
 
-  // Desvanecer después de 5 segundos
-  setTimeout(() => {
-    respuesta.classList.add("fade-out");
-    nombreInput.classList.add("fade-out");
-    apellidoInput.classList.add("fade-out");
-    mensajeInput.classList.add("fade-out");
-    document.querySelectorAll('input[name="confirmado"]').forEach(el => {
-      el.parentElement.classList.add("fade-out");
-    });
+  respuesta.classList.add("mostrar");
 
-    // Limpiar y restaurar visibilidad después de que se desvanecen
+  // Desvanecer y limpiar después de unos segundos con animación suave
+  setTimeout(() => {
+    // Suavemente desvanecer el contenedor del formulario
+    const container = document.querySelector(".container");
+    container.classList.add("fade-form");
+
     setTimeout(() => {
       document.getElementById("formulario").reset();
       respuesta.innerText = "";
-
-      respuesta.classList.remove("fade-out");
-      nombreInput.classList.remove("fade-out");
-      apellidoInput.classList.remove("fade-out");
-      mensajeInput.classList.remove("fade-out");
-      document.querySelectorAll('input[name="confirmado"]').forEach(el => {
-        el.parentElement.classList.remove("fade-out");
-      });
-    }, 1000); // Esperar a que termine el fade
-  }, 4000); // 4 segundos
+      respuesta.classList.remove("mostrar");
+      container.classList.remove("fade-form");
+    }, 800); // tiempo para la animación
+  }, 3500); // tiempo para mostrar el mensaje antes del desvanecimiento
 });
 
 // Contador regresivo a la boda
